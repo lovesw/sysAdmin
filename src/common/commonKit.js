@@ -7,8 +7,14 @@ export const baseURL = process.env.root
 axios.defaults.baseURL = 'http://192.168.0.32:8082'
 // 默认允许携带cookie
 axios.defaults.withCredentials = false
-
+// 认证的请求头
 export const headerName = 'Authorization'
+// 认证请求头前缀
+export const headerPrefix = 'Bearer'
+// 用户权限信息缓存
+export const permissionName = 'permission'
+// 用户菜单信息缓存
+export const menuName = 'menu'
 /***
  * 全局的ajax请求方法
  * @param method 请求的方式
@@ -18,6 +24,10 @@ export const headerName = 'Authorization'
  * @param vm 当前指针
  */
 export const ajax = function (method, url, data, success, vm) {
+  url = getRequestURL(url, vm)
+  if (url === undefined) {
+    return false
+  }
   axios({
     method: method,
     url: url,
@@ -49,6 +59,10 @@ export const ajax = function (method, url, data, success, vm) {
  * @param vm 返回结果
  */
 export const ajaxFormData = function (url, params, success, vm) {
+  url = getRequestURL(url, vm)
+  if (url === undefined) {
+    return false
+  }
   axios.post(axios.defaults.baseURL + url, params, {headers: {Authorization: getToken()}}).then(function (res) {
     result(res, vm, success)
   })
@@ -83,7 +97,6 @@ function result(res, vm, success) {
 
 /***
  * token 的存放取出
- * @param key
  * @returns  返回token
  */
 export const getToken = function () {
@@ -95,8 +108,61 @@ export const getToken = function () {
  * @param value token值
  */
 export const setToken = function (value) {
-  return sessionStorage.setItem(headerName, 'Bearer' + value)
+  return sessionStorage.setItem(headerName, headerPrefix + value)
 }
 
+/**
+ * 从sessionStorage中获取值
+ * @returns {string}
+ */
+export const getSession = function (key) {
+  return sessionStorage.getItem(key)
+}
+/**
+ * 往sessionStorage中存放值
+ * @param key key
+ * @param value value
+ */
+export const setSession = function (key, value) {
+  return sessionStorage.setItem(key, value)
+}
+/***
+ *  根据传入的URL 编码获取真实的url
+ * @param key
+ * @returns {string}
+ */
+export const getRequestURL = function (key, vm) {
+  if (typeof key === 'string') {
+    return key
+  } else {
+    let res = getResources(key)
+    if (res === undefined) {
+      // 提示没有权限访问该资源
+      vm.$Message.warning("你没有权限访问该资源")
+      return undefined
+    } else {
+      return res
+    }
+  }
+}
+/**
+ * 权限缓存处理
+ * @param value
+ */
+export const setResources = function (value) {
+  let permission = {}
+  for (let valueKey in value) {
+    permission[value[valueKey].id] = value[valueKey].url
+  }
+  setSession(permissionName, JSON.stringify(permission))
+}
+/**
+ * 网络请求前,获取key 对应的真正的URL
+ * @param key key
+ * @returns {string}
+ */
+export const getResources = function (key) {
+  return JSON.parse(getSession(permissionName))[key]
+}
 
 

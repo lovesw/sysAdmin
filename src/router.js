@@ -27,18 +27,18 @@ export default new Router({
     // 文章管理
 
     {
-      path: '/article',
+      path: '/sys',
       component: Main,
       children: [
         {
-          path: 'list',
-          name: '文章列表',
-          component: (resolve) => require(['./views/article/articleList'], resolve)
+          path: 'menuList',
+          name: '菜单列表',
+          component: (resolve) => require(['./views/sys/menuList'], resolve)
         },
         {
-          path: 'addArticle',
-          name: '添加文章',
-          component: (resolve) => require(['./views/article/addArticle'], resolve)
+          path: 'addMenu',
+          name: '添加菜单',
+          component: (resolve) => require(['./views/sys/addMenu'], resolve)
         }
       ]
     }

@@ -25,20 +25,19 @@
     <div class="layout">
         <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto', zIndex: '2'}">
             <img src="../assets/icon.png" class="logo"/>
-            <span class="title">Website后台管理</span>
-            <Menu theme="dark" width="auto">
-                <template>
-                    <!--菜单-->
-                    <Menu theme="dark" width="auto" :active-name.sync="activeName" @on-select="handleChange">
-                        <Submenu name="文章管理">
-                            <template slot="title">
-                                <Icon type="ios-analytics"/>
-                                文章管理
-                            </template>
-                            <MenuItem name="/article/list">文章列表</MenuItem>
-                            <MenuItem name="/article/addArticle">添加文章</MenuItem>
-                        </Submenu>
-                    </Menu>
+            <span class="title">后台管理</span>
+            <!--菜单-->
+            <Menu theme="dark" width="auto" :active-name.sync="activeName" @on-select="handleChange">
+                <template v-for="item in menu " v-if="item.child !==null">
+                    <Submenu :name="item.name">
+                        <template slot="title">
+                            <Icon type="ios-analytics"/>
+                            {{item.name}}
+                        </template>
+                        <template v-for="child in item.child">
+                            <MenuItem :name="child.url">{{child.name}}</MenuItem>
+                        </template>
+                    </Submenu>
                 </template>
             </Menu>
         </Sider>
@@ -100,6 +99,12 @@
         this.activeName = name
         this.$router.push(name)
       },
+    },
+    computed: {
+      // 通过计算属性来获取用户权限菜单
+      menu() {
+        return JSON.parse(this.$kit.getSession(this.$kit.menuName));
+      }
     }
   }
 </script>
