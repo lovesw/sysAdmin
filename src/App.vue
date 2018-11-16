@@ -1,31 +1,22 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <router-view @login="login"/>
     </div>
-    <router-view/>
-  </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+  export default {
+    name: 'App',
+    methods: {
+      login: function (params) {
+        this.$kit.ajax('post', '/u/login', params, (res) => {
+          // 登录成功后,响应的菜单与权限信息放在sessionStorage中
+          sessionStorage.setItem('menu', JSON.stringify(res.data.data.menu))
+          sessionStorage.setItem('permission', JSON.stringify(res.data.data.permission))
+          this.$router.push({path: '/index', query: {month: params.username}})
+        }, this)
+      }
+    }
+  }
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
