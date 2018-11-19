@@ -4,11 +4,11 @@ import Qs from 'qs'
 export const baseURL = process.env.root
 
 // axios 全局默认设置
-axios.defaults.baseURL = 'http://192.168.0.32:8082'
+axios.defaults.baseURL = 'http://127.0.0.1:8000/permission-api'
 // 默认允许携带cookie
 axios.defaults.withCredentials = false
 // 认证的请求头
-export const headerName = 'Authorization'
+export const headerName = 'token'
 // 认证请求头前缀
 export const headerPrefix = 'Bearer'
 // 用户权限信息缓存
@@ -35,7 +35,7 @@ export const ajax = function (method, url, data, success, vm) {
     params: data,
     timeout: 20000,
     headers: {
-      Authorization: getToken()
+      token: getToken()
     },
     paramsSerializer: function (params) { //用来序列化请求参数的
       return Qs.stringify(params, {arrayFormat: 'brackets'})
@@ -63,7 +63,7 @@ export const ajaxFormData = function (url, params, success, vm) {
   if (url === undefined) {
     return false
   }
-  axios.post(axios.defaults.baseURL + url, params, {headers: {Authorization: getToken()}}).then(function (res) {
+  axios.post(axios.defaults.baseURL + url, params, {headers: {token: getToken()}}).then(function (res) {
     result(res, vm, success)
   })
 }
@@ -75,11 +75,11 @@ export const ajaxFormData = function (url, params, success, vm) {
  * @param success 操作成处理方法
  */
 function result(res, vm, success) {
+  // 请求成功后,存放token到session中
+  setToken(res.headers.token)
   if (res.status !== 200) {
     vm.$Message.error("网络请求失败,响应码:" + res.status)
   } else {
-    // 请求成功后,存放token到session中
-    setToken(res.headers.authorization)
     if (res.data.code === 200) {
       // 操作成功后的处理
       if (success) {

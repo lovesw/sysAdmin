@@ -6,7 +6,6 @@
             </FormItem>
             <FormItem label="父级菜单" prop="menu">
                 <Select v-model="menu.fid" class="ipt" placeholder="请选择" name="type">
-                    <Option value="0">一级菜单</Option>
                     <template v-for="item in data1">
                         <Option :value="item.id">{{item.name}}</Option>
                     </template>

@@ -2,7 +2,7 @@ module.exports = {
   // 基本路径
   baseUrl: '/',
   devServer: {
-    host: '192.168.0.32',
+    host: '0.0.0.0',
     port: 9000
   }
 

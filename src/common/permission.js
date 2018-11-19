@@ -8,6 +8,15 @@ export const permission = {
   // 修改菜单
   updateMenu: 4,
   // 获取所有的一级菜单
-  fidMenu: 5
+  fidMenu: 5,
+  //服务列表
+  listService: 6,
+  // 添加服务
+  addService: 7,
+  // 修改服务
+  updateService: 8,
+  // 删除服务
+  deleteService: 9,
+
 
 }

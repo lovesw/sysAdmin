@@ -39,6 +39,14 @@ export default new Router({
           path: 'addMenu',
           name: '添加菜单',
           component: (resolve) => require(['./views/sys/addMenu'], resolve)
+        }, {
+          path: 'serviceList',
+          name: '服务管理',
+          component: (resolve) => require(['./views/sys/serviceList'], resolve)
+        }, {
+          path: 'addService',
+          name: '添加服务',
+          component: (resolve) => require(['./views/sys/addService'], resolve)
         }
       ]
     }
