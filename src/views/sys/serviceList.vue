@@ -23,11 +23,15 @@
           {title: '时间', key: 'date', align: 'center'},
           {
             title: '状态', key: 'status', align: 'center', render: (h, params) => {
-              if (params.row.status === 0) {
-                return h('span', '未启用')
-              } else {
-                return h('span', '启用')
-              }
+              return h('div', [
+                h('Switch ', {
+                  props: {
+                    value: params.row.status === 1,
+                    open: '启用',
+                    close: '未启用'
+                  }
+                })
+              ])
             }
           },
           {
@@ -136,6 +140,18 @@
                 on: {
                   input: (val) => {
                     this.changeService.url = val
+                  }
+                }
+              }), h('Switch ', {
+                props: {
+                  value: this.changeService.status,
+                },
+                style: {
+                  marginTop: '10px'
+                },
+                on: {
+                  input: (val) => {
+                    val ? this.changeService.status = 1 : 0
                   }
                 }
               }),

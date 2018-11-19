@@ -15,6 +15,10 @@ export const headerPrefix = 'Bearer'
 export const permissionName = 'permission'
 // 用户菜单信息缓存
 export const menuName = 'menu'
+
+// 标签页面管理
+export const menuTag = 'menuTag'
+
 /***
  * 全局的ajax请求方法
  * @param method 请求的方式

@@ -59,6 +59,13 @@
             </Header>
             <!--内容-->
             <Content>
+                <div ref="scrollAll" style="position: relative;width: 100%;box-sizing: border-box;padding: 8px 0;height: 50px">
+                    <div style="overflow: hidden;width: 94%;position: absolute;height: 100%" >
+                        <Tag type="dot" closable color="primary">首页</Tag>
+                        <Tag type="dot" closable>菜单列表</Tag>
+                        <Tag type="dot" closable>添加菜单</Tag>
+                    </div>
+                </div>
                 <Card>
                     <div style="padding-bottom: 100px">
                         <router-view></router-view>
@@ -104,6 +111,10 @@
       // 通过计算属性来获取用户权限菜单
       menu() {
         return JSON.parse(this.$kit.getSession(this.$kit.menuName));
+      },
+      //标签页获取计算与循环
+      menuTag() {
+        return JSON.parse(this.$kit.getSession(this.$kit.menuTag))
       }
     }
   }
