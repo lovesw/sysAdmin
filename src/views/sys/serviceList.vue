@@ -22,17 +22,26 @@
           {title: '说明', key: 'content', align: 'center'},
           {title: '时间', key: 'date', align: 'center'},
           {
-            title: '状态', key: 'status', align: 'center', render: (h, params) => {
-              return h('div', [
-                h('Switch ', {
+            title: '状态', key: 'status', align: 'center', render: (h, params) =>
+                h('i-switch', {
                   props: {
                     value: params.row.status === 1,
-                    open: '启用',
-                    close: '未启用'
+                    disable: true
+                  },
+                  on: {
+                    'on-change': (status) => {
+                      // 修改状态
+                      this.$kit.ajax('put', this.$res.updateService, {
+                        status: status ? 1 : 0,
+                        id: params.row.id
+                      }, (res) => {
+                        // 重新加载表格
+                        this.getData()
+                        this.$Message.success(res.data.msg)
+                      })
+                    }
                   }
                 })
-              ])
-            }
           },
           {
             title: '操作', key: 'operate', align: 'center', render: (h, params) => {
@@ -74,7 +83,6 @@
           name: '',
           url: '',
           content: '',
-          status: ''
         },
         isData: '',
       }
@@ -110,7 +118,6 @@
         this.changeService.name = row.name
         this.changeService.url = row.url
         this.changeService.content = row.content
-        this.changeService.status = row.status
         this.$Modal.confirm({
           title: '修改服务信息',
           render: (h) => {
@@ -140,18 +147,6 @@
                 on: {
                   input: (val) => {
                     this.changeService.url = val
-                  }
-                }
-              }), h('Switch ', {
-                props: {
-                  value: this.changeService.status,
-                },
-                style: {
-                  marginTop: '10px'
-                },
-                on: {
-                  input: (val) => {
-                    val ? this.changeService.status = 1 : 0
                   }
                 }
               }),
@@ -185,7 +180,6 @@
         })
       }
     }
-
   }
 </script>
 

@@ -3,8 +3,12 @@ import Qs from 'qs'
 
 export const baseURL = process.env.root
 
-// axios 全局默认设置
-axios.defaults.baseURL = 'http://127.0.0.1:8000/permission-api'
+// axios 全局接口请求地址(即 服务网关的地址)
+axios.defaults.baseURL = baseURL === 'production' ? 'http://www.tianxia120.com' : 'http://127.0.0.1:8000/'
+
+// 定义登录服务接口的,也是必须要的(/服务名称/真实的url
+export const loginUrl = "/permission-api/u/login"
+
 // 默认允许携带cookie
 axios.defaults.withCredentials = false
 // 认证的请求头
@@ -15,7 +19,8 @@ export const headerPrefix = 'Bearer'
 export const permissionName = 'permission'
 // 用户菜单信息缓存
 export const menuName = 'menu'
-
+// 登录成功后的服务
+export const serviceName = "serviceName"
 // 标签页面管理
 export const menuTag = 'menuTag'
 
@@ -45,8 +50,8 @@ export const ajax = function (method, url, data, success, vm) {
       return Qs.stringify(params, {arrayFormat: 'brackets'})
     }
   }).then(function (res) {
-      result(res, vm, success)
-    }
+        result(res, vm, success)
+      }
   ).catch(function (error) {
     if (error) {
       vm.$Message.error('请求出错或服务器出错' + error)
@@ -92,8 +97,7 @@ function result(res, vm, success) {
     } else if (res.data.code === -3) {
       vm.$Message.error(res.data.msg ? res.data.msg : '操作失败')
       vm.$router.push('/login')
-    }
-    else {
+    } else {
       vm.$Message.error(res.data.msg ? res.data.msg : '操作失败')
     }
   }
@@ -149,17 +153,33 @@ export const getRequestURL = function (key, vm) {
     }
   }
 }
-/**
- * 权限缓存处理
- * @param value
+/***
+ * 权限缓存处理(服务名称+权限名称)组合完整的URL
+ * @param permissionList 权限集合
  */
-export const setResources = function (value) {
+export const setResources = function (permissionList) {
   let permission = {}
-  for (let valueKey in value) {
-    permission[value[valueKey].id] = value[valueKey].url
-  }
+  let serverMap = JSON.parse(getSession(serviceName))
+  permissionList.map(function (item) {
+    permission[item.id] = serverMap[item.serverId] + item.url
+  })
   setSession(permissionName, JSON.stringify(permission))
 }
+
+/***
+ *  服务处理
+ * @param service 服务集合
+ */
+export const setServerName = function (service) {
+  let server = {}
+
+  service.map(function (item) {
+    server[item.id] = item.url
+  })
+
+  setSession(serviceName, JSON.stringify(server))
+}
+
 /**
  * 网络请求前,获取key 对应的真正的URL
  * @param key key
