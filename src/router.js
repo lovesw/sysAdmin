@@ -47,6 +47,14 @@ export default new Router({
           path: 'addService',
           name: '添加服务',
           component: (resolve) => require(['./views/sys/addService'], resolve)
+        }, {
+          path: 'permissionList',
+          name: '权限列表',
+          component: (resolve) => require(['./views/sys/permissionList'], resolve)
+        }, {
+          path: 'addPermission',
+          name: '添加权限',
+          component: (resolve) => require(['./views/sys/addPermission'], resolve)
         }
       ]
     }

@@ -6,19 +6,24 @@
         border-radius: 4px;
         overflow: hidden;
     }
-
+    
     .logo {
         width: 40px;
         height: 40px;
         margin: 10px;
     }
-
+    
     .title {
         color: #fff;
         font-size: 17px;
         display: inline-block;
         position: relative;
         top: -23px;
+    }
+    
+    .ivu-poptip-inner {
+        width: 100px !important;
+        margin: auto !important;
     }
 </style>
 <template>
@@ -41,7 +46,7 @@
                 </template>
             </Menu>
         </Sider>
-        <Layout :style="{marginLeft: '200px'}">
+        <Layout :style="{marginLeft: left+'px'}">
             <!--Header-->
             <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', textAlign: 'right'}">
                 <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg"/>
@@ -51,7 +56,6 @@
                         <Icon type="arrow-down-b"></Icon>
                     </a>
                     <DropdownMenu slot="list">
-                        <DropdownItem name="1">个人信息</DropdownItem>
                         <DropdownItem name="2">密码修改</DropdownItem>
                         <DropdownItem name="3">退出登录</DropdownItem>
                     </DropdownMenu>
@@ -59,12 +63,21 @@
             </Header>
             <!--内容-->
             <Content>
-                <div ref="scrollAll" style="position: relative;width: 100%;box-sizing: border-box;padding: 8px 0;height: 50px">
-                    <div style="overflow: hidden;width: 94%;position: absolute;height: 100%" >
-                        <Tag type="dot" closable color="primary">首页</Tag>
-                        <Tag type="dot" closable>菜单列表</Tag>
-                        <Tag type="dot" closable>添加菜单</Tag>
+                <div ref="scrollAll"
+                     style="position: relative;width: 100%;box-sizing: border-box;padding: 8px 0;height: 50px">
+                    <div style="overflow: hidden;width: 94%;position: absolute;height: 100%">
+                        <template v-for="item in menuTag">
+                            <Tag type="dot" closable :color="item.status?'primary':'default'"
+                                 :path="item.path" @on-close="closed(item)" @click.native="tagsClick(item)"
+                                 @click.native.right="mouseRight(item,$event)">
+                                {{item.name}}
+                            </Tag>
+                        </template>
                     </div>
+                    <Poptip v-model="visible" placement="bottom" style="margin-top: 20px" id="tip">
+                        <div slot="title" style="text-align: center" @click="closedNow"><i>关闭当前</i></div>
+                        <div slot="title" style="text-align: center" @click="closedAll"><i>关闭所有</i></div>
+                    </Poptip>
                 </div>
                 <Card>
                     <div style="padding-bottom: 100px">
@@ -82,6 +95,12 @@
       return {
         username: 'admin',
         activeName: '',
+        tag: null,
+        visible: false,
+        // 定义左边导航菜单宽度像素
+        left: 200,
+        // 用来保存鼠标右键点击的按钮信息
+        tagRight: null
       }
     },
     methods: {
@@ -89,9 +108,6 @@
       menuClick(val) {
         let vm = this
         switch (val) {
-          case '1':
-            vm.$router.push('/u/userInfo')
-            break
           case '2':
             vm.$router.push('/u/pwdChange')
             break
@@ -99,13 +115,63 @@
             vm.$emit('logout')
             break
         }
-
       },
       // 菜单选中事件
       handleChange(name) {
         this.activeName = name
         this.$router.push(name)
       },
+      // 点击X 关闭标签事件
+      closed(item) {
+        let mTag = this.menuTag;
+        // 判断大于1 是避免把首页也关闭了
+        if (mTag.length > 1) {
+          mTag.map(function (x, index) {
+            // index!==0 是防止关闭首页
+            if (x.path === item.path && index !== 0) {
+              mTag.splice(index, 1)
+              return;
+            }
+          })
+          this.menuTag = mTag;
+          //设置最后一个为标签页
+          this.$router.push(mTag[mTag.length - 1].path)
+        }
+      },
+      // 关闭当前标签
+      closedNow() {
+        this.closed(this.tagRight)
+        this.visible = false
+      },
+      //关闭全部标签事件
+      closedAll() {
+        this.$router.push(this.menuTag[0].path)
+        this.menuTag = null;
+        this.visible = false
+
+      },
+      // 标签点击事件
+      tagsClick(item) {
+        this.$router.push(item.path)
+      },
+      // 鼠标右键事件
+      mouseRight(item, event) {
+        // 禁用鼠标右键默认弹出
+        event.view.oncontextmenu = function () {
+          return false;
+        }
+        // 设置显示关闭标签
+        this.visible = true
+        // 设置显示位置
+        let dom = document.getElementById("tip")
+        dom.style.display = "block";
+        dom.style.position = "absolute"
+        dom.style.left = event.x - this.left + "px";
+        // 记录点击的按钮
+        this.tagRight = item
+      }
+
+
     },
     computed: {
       // 通过计算属性来获取用户权限菜单
@@ -113,8 +179,41 @@
         return JSON.parse(this.$kit.getSession(this.$kit.menuName));
       },
       //标签页获取计算与循环
-      menuTag() {
-        return JSON.parse(this.$kit.getSession(this.$kit.menuTag))
+      menuTag: {
+        get: function () {
+          this.tag = JSON.parse(this.$kit.getSession(this.$kit.menuTag))
+          if (this.tag == null) {
+            this.tag = [{name: '首页', path: '/index', status: true}];
+          }
+          return this.tag;
+        },
+        set: function (value) {
+          this.$kit.setSession(this.$kit.menuTag, JSON.stringify(value))
+          this.tag = value;
+
+        }
+      },
+      // 通过计算属性来确定
+      
+    },
+    watch: {
+      // 监听路由变化,用来修改标签页
+      $route(to, from) {
+        let mTag = this.menuTag;
+        let status = false
+        // 设置其他为false 并且如果已经存在了,就直接修改状态就好了
+        mTag.map(function (item, index) {
+          mTag[index].status = false;
+          if (item.path === to.path) {
+            mTag[index].status = true
+            status = true
+            return;
+          }
+        })
+        if (!status) {
+          mTag[mTag.length] = {name: to.name, path: to.path, status: true};
+        }
+        this.menuTag = mTag;
       }
     }
   }

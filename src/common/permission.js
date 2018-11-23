@@ -17,6 +17,14 @@ export const permission = {
   updateService: 8,
   // 删除服务
   deleteService: 9,
+  // 权限列表
+  permissionList: 12,
+  // 添加权限
+  addPermission: 13,
+  // 修改权限
+  updatePermission: 14,
+  // 删除权限信息
+  deletePermission: 15,
 
 
 }

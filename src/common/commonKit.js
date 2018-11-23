@@ -186,7 +186,12 @@ export const setServerName = function (service) {
  * @returns {string}
  */
 export const getResources = function (key) {
-  return JSON.parse(getSession(permissionName))[key]
+  let url = getSession(permissionName);
+  if (url == null) {
+    return undefined
+  } else {
+    return JSON.parse(url)[key]
+  }
 }
 
 
