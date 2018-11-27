@@ -55,7 +55,6 @@
                   },
                   on: {
                     click: () => {
-                      // const that = this
                       this.authorization(params.row)
                     }
                   }
@@ -79,7 +78,7 @@
           }
         ],
         data1: [],
-        // 菜单二级数据
+        // 全部菜单与权限信息树状图关系
         data2: [],
         // 权限菜单信息
         data3: [],
@@ -96,11 +95,13 @@
       this.initMenuPermission();
     },
     methods: {
+      // 获取所有的角色数据
       getData: function () {
         this.$kit.ajax('get', this.$res.listRole, {}, (res) => {
           this.data1 = res.data.data
         }, this)
       },
+      // 初始化菜单与权限的树状图关系.
       initMenuPermission: function () {
         let vm = this;
         this.$kit.ajax('get', this.$res.allMenu, {}, (res => {
@@ -132,14 +133,17 @@
         let vm = this;
         // 记录角色ID
         this.roleId = row.id;
+        // 获取角色权限信息并遍历树状图中
         this.$kit.ajax('get', this.$res.rolePermission, {id: row.id}, (res => {
           vm.data3 = vm.$kit.rolePermissionTree(vm.data2, res.data.data);
+          // 显示弹框
           vm.modal1 = true;
         }), this)
       },
       ok: function () {
         let menu = [];
         let permission = [];
+        // 获取所有选中与半选中的方法节点并遍历出菜单与权限
         this.$refs.tree.getCheckedAndIndeterminateNodes().map(function (item) {
           if (item.type) {
             permission.push(item.id)
@@ -147,6 +151,7 @@
             menu.push(item.id)
           }
         })
+        // 请求后台进行授权.
         this.$kit.ajax("post", this.$res.roleAuthorization, {
           menuId: menu,
           permissionId: permission,
@@ -155,12 +160,7 @@
           this.$Message.success(res.data.msg)
           this.data3 = []
         }), this)
-
-
       },
-      cancel: function () {
-
-      }
     }
   }
 </script>
