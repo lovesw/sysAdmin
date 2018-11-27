@@ -25,6 +25,20 @@ export const permission = {
   updatePermission: 14,
   // 删除权限信息
   deletePermission: 15,
+  // 获取所有与的菜单
+  allMenu: 16,
+  // 角色列表
+  listRole: 17,
+  // 添加角色
+  addRole: 18,
+  // 删除角色
+  deleteRole: 19,
+  // 角色授权
+  roleAuthorization: 20,
+  // 角色权限
+  rolePermission: 21,
+  // 所有的权限信息
+  allPermission: 22
 
 
 }

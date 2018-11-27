@@ -26,6 +26,11 @@
           {title: '路由', key: 'url', align: 'center'},
           {title: '内容', key: 'content', align: 'center'},
           {title: '所属服务', key: 'serverName', align: 'center'},
+          {
+            title: '必要类型', key: 'must', align: 'center', render: (h, params) => {
+              return h('span', params.row.must === 1 ? '是' : '否')
+            }
+          },
           {title: '时间', key: 'date', align: 'center'},
           {
             title: '操作', key: 'operate', align: 'center', render: (h, params) => {
@@ -64,7 +69,15 @@
         // 分页相关
         total: 0, // 总数据大小
         pageSize: 10, // 页码大小
-        current: 1
+        current: 1,
+        // 修改的权限信息定义
+        permission: {
+          id: '',
+          name: '',
+          url: '',
+          content: '',
+          must: ''
+        },
       }
     },
     mounted: function () {
@@ -104,11 +117,89 @@
           }
         })
       },
+      // 修改权限信息
       change: function (row) {
+        this.permission.id = row.id;
+        this.permission.name = row.name;
+        this.permission.url = row.url;
+        this.permission.must = row.must;
+        this.permission.content = row.content;
 
+        this.$Modal.confirm({
+          title: '修改的权限信息',
+          render: (h) => {
+            return ('div', [
+              h('Input', {
+                props: {
+                  value: this.permission.name,
+                  placeholder: '修改权限名称'
+                },
+                style: {
+                  marginTop: '20px'
+                },
+                on: {
+                  input: (val) => {
+                    this.permission.name = val
+                  }
+                }
+              }), h('Input', {
+                props: {
+                  value: this.permission.url,
+                  placeholder: '修改权限URL'
+                },
+                style: {
+                  marginTop: '20px'
+                },
+                on: {
+                  input: (val) => {
+                    this.permission.url = val
+                  }
+                }
+              }), h('i-switch', {
+                props: {
+                  value: row.must === 1,
+                },
+                style: {
+                  marginTop: '20px'
+                },
+                on: {
+                  'on-change': (val) => {
+                    this.permission.must = val ? 1 : 0;
+                  }
+                }
+              }),
+              h('Input', {
+                props: {
+                  type: 'textarea',
+                  value: this.permission.content,
+                  placeholder: '修改的描述'
+                },
+                style: {
+                  marginTop: '20px'
+                },
+                on: {
+                  input: (val) => {
+                    this.permission.content = val
+                  }
+                }
+              })
+
+            ])
+          },
+          onCancel: () => {
+            this.$Message.info("取消操作")
+          },
+          onOk: () => {
+            this.$kit.ajax('put', this.$res.updatePermission, this.permission, (res) => {
+              // 重新加载表格
+              this.getData()
+              this.$Message.success(res.data.msg)
+            })
+          }
+
+        });
       }
     }
-
   }
 </script>
 

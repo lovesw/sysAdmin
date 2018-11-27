@@ -55,6 +55,14 @@ export default new Router({
           path: 'addPermission',
           name: '添加权限',
           component: (resolve) => require(['./views/sys/addPermission'], resolve)
+        }, {
+          path: 'roleList',
+          name: '角色列表',
+          component: (resolve) => require(['./views/sys/roleList'], resolve)
+        }, {
+          path: 'addRole',
+          name: '添加角色',
+          component: (resolve) => require(['./views/sys/addRole'], resolve)
         }
       ]
     }
