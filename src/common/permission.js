@@ -38,7 +38,13 @@ export const permission = {
   // 角色权限
   rolePermission: 21,
   // 所有的权限信息
-  allPermission: 22
+  allPermission: 22,
+  // 用户列表
+  userList: 23,
+  // 授予用于指定角色
+  userAddRole: 24,
+  // 删除用户
+  deleteUser:25
 
 
 }

@@ -63,6 +63,10 @@ export default new Router({
           path: 'addRole',
           name: '添加角色',
           component: (resolve) => require(['./views/sys/addRole'], resolve)
+        },{
+          path: 'userList',
+          name: '用户管理',
+          component: (resolve) => require(['./views/sys/userList'], resolve)
         }
       ]
     }

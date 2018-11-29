@@ -21,6 +21,12 @@
         top: -23px;
     }
     
+    .ivu-poptip-title {
+        margin: 0;
+        padding: 0 !important;
+        position: relative;
+    }
+    
     .ivu-poptip-inner {
         width: 100px !important;
         margin: auto !important;
@@ -75,8 +81,12 @@
                         </template>
                     </div>
                     <Poptip v-model="visible" placement="bottom" style="margin-top: 20px" id="tip">
-                        <div slot="title" style="text-align: center" @click="closedNow"><i>关闭当前</i></div>
-                        <div slot="title" style="text-align: center" @click="closedAll"><i>关闭所有</i></div>
+                        <div slot="title" @click="closedOther" style="text-align: center">
+                            <DropdownItem>关闭其他</DropdownItem>
+                        </div>
+                        <div slot="title" @click="closedAll" style="text-align: center">
+                            <DropdownItem>关闭所有</DropdownItem>
+                        </div>
                     </Poptip>
                 </div>
                 <Card>
@@ -106,15 +116,6 @@
     methods: {
       // 点击个人信息和密码修改的下拉菜单项事件
       menuClick(val) {
-        let vm = this
-        switch (val) {
-          case '2':
-            vm.$router.push('/u/pwdChange')
-            break
-          case '3':
-            vm.$emit('logout')
-            break
-        }
       },
       // 菜单选中事件
       handleChange(name) {
@@ -138,17 +139,23 @@
           this.$router.push(mTag[mTag.length - 1].path)
         }
       },
-      // 关闭当前标签
-      closedNow() {
-        this.closed(this.tagRight)
-        this.visible = false
-      },
       //关闭全部标签事件
       closedAll() {
         this.$router.push(this.menuTag[0].path)
         this.menuTag = null;
         this.visible = false
 
+      },
+      // 关闭其他按钮
+      closedOther() {
+        // 保留首页与当前标签
+        if (this.tagRight.path === this.menuTag[0].path) {
+          this.menuTag = [this.menuTag[0]]
+          this.menuTag[0].status = true
+        } else {
+          this.menuTag = [this.menuTag[0], this.tagRight];
+        }
+        this.visible = false
       },
       // 标签点击事件
       tagsClick(item) {
@@ -194,7 +201,7 @@
         }
       },
       // 通过计算属性来确定
-      
+
     },
     watch: {
       // 监听路由变化,用来修改标签页
@@ -207,9 +214,9 @@
           if (item.path === to.path) {
             mTag[index].status = true
             status = true
-            return;
           }
         })
+        // 添加一个新的标签
         if (!status) {
           mTag[mTag.length] = {name: to.name, path: to.path, status: true};
         }
