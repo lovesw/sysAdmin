@@ -108,31 +108,22 @@
 
         }, this)
       },
-
       remove: function (id) {
-        this.$Modal.confirm({
-          title: '删除确定',
-          content: '<p>你确定要删除该用户吗?删除后不可撤销</p>',
-          onOk: () => {
-            this.$kit.ajax('delete', this.$res.deleteUser, {id: id}, (res) => {
-              this.$Message.success('删除成功')
-              // 重新加载数据
-              this.getData()
-            }, this)
-          },
-          onCancel: () => {
-            this.$Message.warning('取消操作')
-          }
+        let param = {msg: "用户", id: id, permissionId: this.$res.deleteUser}
+        this.$emit("remove", param, () => {
+          this.getData();
         })
       },
       // 角色名称处理
       roleDetail: function (row) {
         let userRole = [];
-        row.role.split(',').map(function (item) {
-          if (item !== "") {
-            userRole.push(item)
-          }
-        })
+        if (row.role !== null) {
+          row.role.split(',').map(function (item) {
+            if (item !== "") {
+              userRole.push(item)
+            }
+          })
+        }
         return userRole
       },
       // 授予用户角色

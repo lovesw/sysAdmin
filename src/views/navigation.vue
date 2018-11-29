@@ -91,7 +91,7 @@
                 </div>
                 <Card>
                     <div style="padding-bottom: 100px">
-                        <router-view></router-view>
+                        <router-view @remove="remove"></router-view>
                     </div>
                 </Card>
             </Content>
@@ -176,9 +176,27 @@
         dom.style.left = event.x - this.left + "px";
         // 记录点击的按钮
         this.tagRight = item
+      },
+      /***
+       * 全局删除提示操作
+       * @param params 参数
+       * @param reload 删除成功后的处理方法
+       */
+      remove: function (params, reload) {
+        this.$Modal.confirm({
+          title: '删除确定',
+          content: '<p>你确定要删除该' + params.msg + '吗?删除后不可撤销</p>',
+          onOk: () => {
+            this.$kit.ajax('delete', params.permissionId, {id: params.id}, (res) => {
+              this.$Message.success('删除成功')
+              reload();
+            }, this)
+          },
+          onCancel: () => {
+            this.$Message.info('取消操作')
+          }
+        })
       }
-
-
     },
     computed: {
       // 通过计算属性来获取用户权限菜单

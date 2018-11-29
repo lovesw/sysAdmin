@@ -97,20 +97,11 @@
           this.data1 = res.data.data
         }, this)
       },
+      // 删除服务
       remove: function (id) {
-        this.$Modal.confirm({
-          title: '删除确定',
-          content: '<p>你确定要删除该服务吗?删除后不可撤销</p>',
-          onOk: () => {
-            this.$kit.ajax('delete', this.$res.deleteService, {id: id}, (res) => {
-              this.$Message.success('删除成功')
-              // 重新加载数据
-              this.getData()
-            }, this)
-          },
-          onCancel: () => {
-            this.$Message.error('删除失败')
-          }
+        let param = {msg: "服务", id: id, permissionId: this.$res.deleteService}
+        this.$emit("remove", param, () => {
+          this.getData();
         })
       },
       change: function (row) {

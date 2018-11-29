@@ -1,10 +1,10 @@
 import axios from 'axios'
 import Qs from 'qs'
 
-export const baseURL = process.env.root;
+export const baseURL = process.env.NODE_ENV;
 
 // axios 全局接口请求地址(即 服务网关的地址)
-axios.defaults.baseURL = baseURL === 'production' ? 'http://www.tianxia120.com' : 'http://127.0.0.1:8000/';
+axios.defaults.baseURL = baseURL === 'production' ? 'http://www.lovesws.cn/' : 'http://127.0.0.1:8000/';
 
 // 定义登录服务接口的,也是必须要的(/服务名称/真实的url
 export const loginUrl = "/permission-api/u/login";

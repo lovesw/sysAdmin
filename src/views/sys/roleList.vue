@@ -113,19 +113,9 @@
       },
       // 删除按钮
       remove: function (id) {
-        this.$Modal.confirm({
-          title: '删除确定',
-          content: '<p>你确定要删除角色吗?删除后不可撤销</p>',
-          onOk: () => {
-            this.$kit.ajax('delete', this.$res.deleteRole, {id: id}, (res) => {
-              this.$Message.success('删除成功')
-              // 重新加载数据
-              this.getData()
-            }, this)
-          },
-          onCancel: () => {
-            this.$Message.error('删除失败')
-          }
+        let param = {msg: "角色", id: id, permissionId: this.$res.deleteRole}
+        this.$emit("remove", param, () => {
+          this.getData();
         })
       },
       // 授权操作

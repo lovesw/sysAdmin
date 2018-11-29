@@ -102,19 +102,9 @@
         }, this)
       },
       remove: function (id) {
-        this.$Modal.confirm({
-          title: '删除确定',
-          content: '<p>你确定要删除该权限吗?删除后不可撤销</p>',
-          onOk: () => {
-            this.$kit.ajax('delete', this.$res.deletePermission, {id: id}, (res) => {
-              this.$Message.success('删除成功')
-              // 重新加载数据
-              this.getData()
-            }, this)
-          },
-          onCancel: () => {
-            this.$Message.info('取消操作')
-          }
+        let param = {msg: "权限", id: id, permissionId: this.$res.deletePermission}
+        this.$emit("remove", param, () => {
+          this.getData();
         })
       },
       // 修改权限信息

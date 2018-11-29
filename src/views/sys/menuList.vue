@@ -106,19 +106,9 @@
         }), this)
       },
       remove: function (id) {
-        this.$Modal.confirm({
-          title: '删除确定',
-          content: '<p>你确定要删除该菜单吗?删除后不可撤销</p>',
-          onOk: () => {
-            this.$kit.ajax('delete', this.$res.deleteMenu, {id: id}, (res) => {
-              this.$Message.success('删除成功')
-              // 重新加载数据
-              this.getData()
-            }, this)
-          },
-          onCancel: () => {
-            this.$Message.error('删除失败')
-          }
+        let param = {msg: "菜单", id: id, permissionId: this.$res.deleteMenu}
+        this.$emit("remove", param, () => {
+          this.getData();
         })
       },
       change: function (row) {
@@ -133,20 +123,20 @@
           render: (h) => {
             return ('div', [
               h('Select', {
-                  props: {
-                    value: this.changeMenu.fid,
-                  },
-                  style: {
-                    marginTop: '20px'
-                  }
-                }, this.isData.map((item) => {
-                  return h('Option', {
                     props: {
-                      value: item.id,
-                      label: item.name
+                      value: this.changeMenu.fid,
+                    },
+                    style: {
+                      marginTop: '20px'
                     }
+                  }, this.isData.map((item) => {
+                    return h('Option', {
+                      props: {
+                        value: item.id,
+                        label: item.name
+                      }
+                    })
                   })
-                })
               ),
               h('Input', {
                 props: {

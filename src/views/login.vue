@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <h1> WEBSITES
+    <h1> PERMISSION
       <br>Management System
     </h1><br>
     <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
