@@ -22,6 +22,19 @@ Vue.directive('has', {
     }
   }
 })
+// 路由变化前处理,用于拦截没有登录就直接进入到了静态页面.
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login') {
+    if (kit.getSession(kit.headerName)) {
+      return next()
+    } else {
+      //如果没有获取到session登录凭证就直接跳转到登录页面
+      return next('/login')
+    }
+  } else {
+    return next()
+  }
+})
 
 new Vue({
   router,
