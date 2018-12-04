@@ -137,6 +137,7 @@ export const setSession = function (key, value) {
 /***
  *  根据传入的URL 编码获取真实的url
  * @param key
+ * @param vm 当前对象的this 指针,用于全局弹框提示.
  * @returns {string}
  */
 export const getRequestURL = function (key, vm) {
@@ -161,7 +162,10 @@ export const setResources = function (permissionList) {
   let permission = {};
   let serverMap = JSON.parse(getSession(serviceName));
   permissionList.map(function (item) {
-    permission[item.id] = serverMap[item.serverId] + item.url
+    // 有可能 服务被停用了,导致服务连接不可用
+    if(serverMap[item.serverId]!==undefined){
+      permission[item.id] = serverMap[item.serverId] + item.url
+    }
   });
   setSession(permissionName, JSON.stringify(permission))
 };
