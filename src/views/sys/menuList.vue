@@ -1,15 +1,15 @@
 <template>
     <div>
-        <Table stripe :columns="columns" :data="data1" class="table"></Table>
+        <Table :columns="columns" :data="data1" class="table" stripe></Table>
         <div style="text-align: right">
             <router-link to="/sys/addMenu">
-                <Button icon="plus-round" type="primary" shape="circle" class="add" v-has="this.$res.addMenu">添加
+                <Button class="add" icon="plus-round" shape="circle" type="primary" v-has="this.$res.addMenu">添加
                 </Button>
             </router-link>
         </div>
         <div style="text-align: right;margin: 5px">
-            <Page :total="total" size="small" show-total show-elevator show-sizer @on-change="pageChange"
-                  @on-page-size-change="sizeChange"></Page>
+            <Page :total="total" @on-change="pageChange" @on-page-size-change="sizeChange" show-elevator show-sizer show-total
+                  size="small"></Page>
         </div>
     </div>
 </template>
@@ -123,20 +123,20 @@
           render: (h) => {
             return ('div', [
               h('Select', {
+                  props: {
+                    value: this.changeMenu.fid,
+                  },
+                  style: {
+                    marginTop: '20px'
+                  }
+                }, this.isData.map((item) => {
+                  return h('Option', {
                     props: {
-                      value: this.changeMenu.fid,
-                    },
-                    style: {
-                      marginTop: '20px'
+                      value: item.id,
+                      label: item.name
                     }
-                  }, this.isData.map((item) => {
-                    return h('Option', {
-                      props: {
-                        value: item.id,
-                        label: item.name
-                      }
-                    })
                   })
+                })
               ),
               h('Input', {
                 props: {

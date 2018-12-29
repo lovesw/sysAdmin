@@ -1,27 +1,27 @@
 <template>
     <div>
-        <Form ref="menu" :model="menu" :rules="ruleValidate" :label-width="80" class="form">
+        <Form :label-width="80" :model="menu" :rules="ruleValidate" class="form" ref="menu">
             <FormItem label="菜单名称" prop="name">
-                <Input v-model="menu.name" placeholder="请输入菜单名称" class="ipt"/>
+                <Input class="ipt" placeholder="请输入菜单名称" v-model="menu.name"/>
             </FormItem>
             <FormItem label="父级菜单" prop="menu">
-                <Select v-model="menu.fid" class="ipt" placeholder="请选择" name="type">
+                <Select class="ipt" name="type" placeholder="请选择" v-model="menu.fid">
                     <template v-for="item in data1">
                         <Option :value="item.id">{{item.name}}</Option>
                     </template>
                 </Select>
             </FormItem>
             <FormItem label="URL" prop="url">
-                <Input v-model="menu.url" placeholder="请输入url地址" class="ipt"/>
+                <Input class="ipt" placeholder="请输入url地址" v-model="menu.url"/>
             </FormItem>
             <FormItem label="排序值" prop="sort">
-                <Input v-model="menu.sort" placeholder="排序值" class="ipt"/>
+                <Input class="ipt" placeholder="排序值" v-model="menu.sort"/>
             </FormItem>
             <FormItem label="添加说明" prop="content">
-                <Input type="textarea" v-model="menu.content" placeholder="请输入说明内容" class="ipt"/>
+                <Input class="ipt" placeholder="请输入说明内容" type="textarea" v-model="menu.content"/>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('menu')">提交</Button>
+                <Button @click="handleSubmit('menu')" type="primary">提交</Button>
             </FormItem>
         </Form>
     </div>

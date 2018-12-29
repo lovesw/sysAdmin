@@ -1,35 +1,35 @@
 <template>
     <div>
-        <Form ref="permission" :model="permission" :rules="ruleValidate" :label-width="80" class="form">
+        <Form :label-width="80" :model="permission" :rules="ruleValidate" class="form" ref="permission">
             <FormItem label="隶属服务" prop="serverId">
-                <Select v-model="permission.serverId" class="ipt" placeholder="请选择" name="serverId">
+                <Select class="ipt" name="serverId" placeholder="请选择" v-model="permission.serverId">
                     <template v-for="(val, key) in data1">
                         <Option :value="key">{{val}}</Option>
                     </template>
                 </Select>
             </FormItem>
             <FormItem label="必须权限" prop="must">
-                <Select v-model="permission.must" class="ipt" placeholder="请选择" name="must">
+                <Select class="ipt" name="must" placeholder="请选择" v-model="permission.must">
                     <Option value="1">是</Option>
                     <Option value="0">否</Option>
                 </Select>
             </FormItem>
             <FormItem label="隶属菜单" prop="menu">
-                <Input v-model="permission.menu" placeholder="请选择菜单" class="ipt" readonly/>
-                <Button icon="android-list" type="primary" shape="circle" size="small" @click="choiceMenu">请选择</Button>
+                <Input class="ipt" placeholder="请选择菜单" readonly v-model="permission.menu"/>
+                <Button @click="choiceMenu" icon="android-list" shape="circle" size="small" type="primary">请选择</Button>
             </FormItem>
             <FormItem label="权限名称" prop="name">
-                <Input v-model="permission.name" placeholder="请输入权限名称" class="ipt"/>
+                <Input class="ipt" placeholder="请输入权限名称" v-model="permission.name"/>
             </FormItem>
             <FormItem label="URL" prop="url">
-                <Input v-model="permission.url" placeholder="请输入url地址" class="ipt"/>
+                <Input class="ipt" placeholder="请输入url地址" v-model="permission.url"/>
             </FormItem>
-            
+
             <FormItem label="权限说明" prop="content">
-                <Input type="textarea" v-model="permission.content" placeholder="请输入说明内容" class="ipt"/>
+                <Input class="ipt" placeholder="请输入说明内容" type="textarea" v-model="permission.content"/>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('permission')">提交</Button>
+                <Button @click="handleSubmit('permission')" type="primary">提交</Button>
             </FormItem>
         </Form>
     </div>
@@ -92,10 +92,10 @@
         this.$refs[name].validate((valid) => {
           if (valid) {
             this.$kit.ajax('post', this.$res.addPermission, this.permission, (res => {
-                  this.$Message.success("添加成功");
-                  // 重置表单
-                  this.$refs.permission.resetFields();
-                }
+                this.$Message.success("添加成功");
+                // 重置表单
+                this.$refs.permission.resetFields();
+              }
             ), this)
           } else {
             this.$Message.error("请认真填写权限信息")
@@ -153,7 +153,7 @@
     .ipt {
         width: 500px;
     }
-    
+
     .form {
         margin: 60px 0 10px 200px;
     }

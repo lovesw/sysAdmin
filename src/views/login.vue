@@ -1,26 +1,26 @@
 <template>
-  <div id="login">
-    <h1> PERMISSION
-      <br>Management System
-    </h1><br>
-    <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-      <FormItem prop="username">
-        <i-input type="text" v-model="formInline.username" placeholder="Username" class="ipt">
-          <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </i-input>
-      </FormItem>
-      <br><br>
-      <FormItem prop="password">
-        <i-input type="password" v-model="formInline.password" placeholder="Password" class="ipt">
-          <Icon type="ios-locked-outline" slot="prepend"></Icon>
-        </i-input>
-      </FormItem>
-      <br>
-      <FormItem>
-        <Button type="primary" @click="handleSubmit('formInline')" class="ipt">login</Button>
-      </FormItem>
-    </Form>
-  </div>
+    <div id="login">
+        <h1> PERMISSION
+            <br>Management System
+        </h1><br>
+        <Form :model="formInline" :rules="ruleInline" inline ref="formInline">
+            <FormItem prop="username">
+                <i-input class="ipt" placeholder="Username" type="text" v-model="formInline.username">
+                    <Icon slot="prepend" type="ios-person-outline"></Icon>
+                </i-input>
+            </FormItem>
+            <br><br>
+            <FormItem prop="password">
+                <i-input class="ipt" placeholder="Password" type="password" v-model="formInline.password">
+                    <Icon slot="prepend" type="ios-locked-outline"></Icon>
+                </i-input>
+            </FormItem>
+            <br>
+            <FormItem>
+                <Button @click="handleSubmit('formInline')" class="ipt" type="primary">login</Button>
+            </FormItem>
+        </Form>
+    </div>
 </template>
 
 <script>
@@ -59,12 +59,12 @@
 </script>
 
 <style scoped>
-  #login {
-    padding-top: 10%;
-    text-align: center;
-  }
+    #login {
+        padding-top: 10%;
+        text-align: center;
+    }
 
-  .ipt {
-    width: 300px
-  }
+    .ipt {
+        width: 300px
+    }
 </style>

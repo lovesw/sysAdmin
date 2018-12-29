@@ -1,17 +1,17 @@
 <template>
     <div>
-        <Form ref="service" :model="service" :rules="ruleValidate" :label-width="80" class="form">
+        <Form :label-width="80" :model="service" :rules="ruleValidate" class="form" ref="service">
             <FormItem label="服务名称" prop="name">
-                <Input v-model="service.name" placeholder="请输入服务名称" class="ipt"/>
+                <Input class="ipt" placeholder="请输入服务名称" v-model="service.name"/>
             </FormItem>
             <FormItem label="路由" prop="url">
-                <Input v-model="service.url" placeholder="请输入服务请求应用名称(访问前缀)" class="ipt"/>
+                <Input class="ipt" placeholder="请输入服务请求应用名称(访问前缀)" v-model="service.url"/>
             </FormItem>
             <FormItem label="服务说明" prop="content">
-                <Input type="textarea" v-model="service.content" placeholder="请输入说明内容" class="ipt"/>
+                <Input class="ipt" placeholder="请输入说明内容" type="textarea" v-model="service.content"/>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('service')">提交</Button>
+                <Button @click="handleSubmit('service')" type="primary">提交</Button>
             </FormItem>
         </Form>
     </div>

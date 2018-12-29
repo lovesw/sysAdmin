@@ -44,7 +44,7 @@ export const permission = {
   // 授予用于指定角色
   userAddRole: 24,
   // 删除用户
-  deleteUser:25
+  deleteUser: 25
 
 
 }

@@ -1,14 +1,9 @@
 import axios from 'axios'
 import Qs from 'qs'
 
-export const baseURL = process.env.NODE_ENV;
-
-// axios 全局接口请求地址(即 服务网关的地址)
-axios.defaults.baseURL = baseURL === 'production' ? 'http://www.lovesws.cn/' : 'http://127.0.0.1:8000/';
-
+export const baseURL = process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:8000';
 // 定义登录服务接口的,也是必须要的(/服务名称/真实的url
-export const loginUrl = "/permission-api/u/login";
-
+export const loginUrl = "/u/login";
 // 默认允许携带cookie
 axios.defaults.withCredentials = false;
 // 认证的请求头
@@ -39,7 +34,7 @@ export const ajax = function (method, url, data, success, vm) {
   }
   axios({
     method: method,
-    url: url,
+    url: baseURL + url,
     data: method === 'POST' || method === 'PUT' ? data : null,
     params: data,
     timeout: 20000,
@@ -50,8 +45,8 @@ export const ajax = function (method, url, data, success, vm) {
       return Qs.stringify(params, {arrayFormat: 'brackets'})
     }
   }).then(function (res) {
-        result(res, vm, success)
-      }
+      result(res, vm, success)
+    }
   ).catch(function (error) {
     if (error) {
       vm.$Message.error('请求出错或服务器出错' + error)
@@ -72,7 +67,7 @@ export const ajaxFormData = function (url, params, success, vm) {
   if (url === undefined) {
     return false
   }
-  axios.post(axios.defaults.baseURL + url, params, {headers: {token: getToken()}}).then(function (res) {
+  axios.post(baseURL + url, params, {headers: {token: getToken()}}).then(function (res) {
     result(res, vm, success)
   })
 };
@@ -163,8 +158,13 @@ export const setResources = function (permissionList) {
   let serverMap = JSON.parse(getSession(serviceName));
   permissionList.map(function (item) {
     // 有可能 服务被停用了,导致服务连接不可用
-    if(serverMap[item.serverId]!==undefined){
-      permission[item.id] = serverMap[item.serverId] + item.url
+    if (serverMap[item.serverId] !== undefined) {
+      // 处理如果是默认服务/ 就不添加前缀
+      if (serverMap[item.serverId] === "/") {
+        permission[item.id] = item.url
+      } else {
+        permission[item.id] = serverMap[item.serverId] + item.url
+      }
     }
   });
   setSession(permissionName, JSON.stringify(permission))

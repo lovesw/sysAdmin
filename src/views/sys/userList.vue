@@ -1,11 +1,11 @@
 <template>
     <div>
-        <Table stripe :columns="columns" :data="data1" class="table"></Table>
+        <Table :columns="columns" :data="data1" class="table" stripe></Table>
         <div style="text-align: right;margin: 5px">
-            <Page :total="total" size="small" show-total show-elevator show-sizer @on-change="pageChange"
-                  @on-page-size-change="sizeChange"></Page>
+            <Page :total="total" @on-change="pageChange" @on-page-size-change="sizeChange" show-elevator show-sizer show-total
+                  size="small"></Page>
         </div>
-        <Modal @on-ok="ok" v-model="model" v-if="this.role.length>0">
+        <Modal @on-ok="ok" v-if="this.role.length>0" v-model="model">
             <template v-for="item in this.role">
                 <checkbox v-model="item.status">{{item.name}}</checkbox>
             </template>
@@ -129,16 +129,20 @@
       // 授予用户角色
       change: function (row) {
         // 获取用户角色
-        let userRole = row.role.split(',')
-        // 标记用户拥有的角色
-        this.role.forEach(function (items) {
-          items.status = false
-          userRole.map(function (item) {
-            if (items.name === item) {
-              items.status = true
-            }
+        let userRole = row.role;
+        // 用户默认如果没有角色身份时,避免分割出错
+        if (userRole !== null) {
+          userRole = userRole.split(",")
+          // 标记用户拥有的角色
+          this.role.forEach(function (items) {
+            items.status = false
+            userRole.map(function (item) {
+              if (items.name === item) {
+                items.status = true
+              }
+            })
           })
-        })
+        }
         this.model = true
         this.userId = row.id
       },

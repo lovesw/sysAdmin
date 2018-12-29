@@ -1,9 +1,9 @@
 <template>
     <div>
-        <Table stripe :columns="columns" :data="data1" class="table"></Table>
+        <Table :columns="columns" :data="data1" class="table" stripe></Table>
         <div style="text-align: right">
             <router-link to="/sys/addService">
-                <Button icon="plus-round" type="primary" shape="circle" class="add" v-has="this.$res.addMenu">添加
+                <Button class="add" icon="plus-round" shape="circle" type="primary" v-has="this.$res.addMenu">添加
                 </Button>
             </router-link>
         </div>
@@ -23,25 +23,25 @@
           {title: '时间', key: 'date', align: 'center'},
           {
             title: '状态', key: 'status', align: 'center', render: (h, params) =>
-                h('i-switch', {
-                  props: {
-                    value: params.row.status === 1,
-                    disable: true
-                  },
-                  on: {
-                    'on-change': (status) => {
-                      // 修改状态
-                      this.$kit.ajax('put', this.$res.updateService, {
-                        status: status ? 1 : 0,
-                        id: params.row.id
-                      }, (res) => {
-                        // 重新加载表格
-                        this.getData()
-                        this.$Message.success(res.data.msg)
-                      })
-                    }
+              h('i-switch', {
+                props: {
+                  value: params.row.status === 1,
+                  disable: true
+                },
+                on: {
+                  'on-change': (status) => {
+                    // 修改状态
+                    this.$kit.ajax('put', this.$res.updateService, {
+                      status: status ? 1 : 0,
+                      id: params.row.id
+                    }, (res) => {
+                      // 重新加载表格
+                      this.getData();
+                      this.$Message.success(res.data.msg)
+                    }, this)
                   }
-                })
+                }
+              })
           },
           {
             title: '操作', key: 'operate', align: 'center', render: (h, params) => {

@@ -1,14 +1,14 @@
 <template>
     <div>
-        <Table stripe :columns="columns1" :data="data1" class="table"></Table>
+        <Table :columns="columns1" :data="data1" class="table" stripe></Table>
         <div style="text-align: right">
             <router-link to="/sys/addRole">
-                <Button icon="plus-round" type="primary" shape="circle" class="add" v-has="this.$res.addRole">添加
+                <Button class="add" icon="plus-round" shape="circle" type="primary" v-has="this.$res.addRole">添加
                 </Button>
             </router-link>
         </div>
-        <Modal v-model="modal1" @on-ok="ok">
-            <Tree :data="data3" show-checkbox multiple ref="tree"></Tree>
+        <Modal @on-ok="ok" v-model="modal1">
+            <Tree :data="data3" multiple ref="tree" show-checkbox></Tree>
         </Modal>
     </div>
 </template>
@@ -143,8 +143,8 @@
         })
         // 请求后台进行授权.
         this.$kit.ajax("post", this.$res.roleAuthorization, {
-          menuId: menu,
-          permissionId: permission,
+          menuId: menu.join(','),
+          permissionId: permission.join(','),
           roleId: this.roleId
         }, (res => {
           this.$Message.success(res.data.msg)

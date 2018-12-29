@@ -1,14 +1,14 @@
 <template>
     <div>
-        <Form ref="role" :model="role" :rules="ruleValidate" :label-width="80" class="form">
+        <Form :label-width="80" :model="role" :rules="ruleValidate" class="form" ref="role">
             <FormItem label="角色名称" prop="name">
-                <Input v-model="role.name" placeholder="请输入服务名称" class="ipt"/>
+                <Input class="ipt" placeholder="请输入服务名称" v-model="role.name"/>
             </FormItem>
             <FormItem label="角色描述" prop="content">
-                <Input type="textarea" v-model="role.content" placeholder="请输入说明内容" class="ipt"/>
+                <Input class="ipt" placeholder="请输入说明内容" type="textarea" v-model="role.content"/>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="handleSubmit('role')">提交</Button>
+                <Button @click="handleSubmit('role')" type="primary">提交</Button>
             </FormItem>
         </Form>
     </div>
@@ -54,7 +54,7 @@
     .ipt {
         width: 500px;
     }
-    
+
     .form {
         margin: 60px 0 10px 200px;
     }

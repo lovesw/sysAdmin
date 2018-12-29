@@ -87,7 +87,7 @@ let permission = [
 /**
  * 全局路由定义
  */
-export default  new Router({
+export default new Router({
   routes: [
     ...home,
     ...adminHome,

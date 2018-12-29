@@ -6,13 +6,13 @@
         border-radius: 4px;
         overflow: hidden;
     }
-    
+
     .logo {
         width: 40px;
         height: 40px;
         margin: 10px;
     }
-    
+
     .title {
         color: #fff;
         font-size: 17px;
@@ -20,13 +20,13 @@
         position: relative;
         top: -23px;
     }
-    
+
     .ivu-poptip-title {
         margin: 0;
         padding: 0 !important;
         position: relative;
     }
-    
+
     .ivu-poptip-inner {
         width: 100px !important;
         margin: auto !important;
