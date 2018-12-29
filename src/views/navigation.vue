@@ -116,6 +116,11 @@
     methods: {
       // 点击个人信息和密码修改的下拉菜单项事件
       menuClick(val) {
+        if (val === '3') {
+          this.$router.push('/');
+          // 退出登录后,就清除session中数据
+          sessionStorage.clear()
+        }
       },
       // 菜单选中事件
       handleChange(name) {
