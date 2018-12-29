@@ -103,7 +103,7 @@
     name: 'navigation',
     data() {
       return {
-        username: 'admin',
+        username: this.$route.query.username,
         activeName: '',
         tag: null,
         visible: false,

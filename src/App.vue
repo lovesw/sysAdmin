@@ -17,7 +17,7 @@
           // 保存权限
           this.$kit.setResources(res.data.data.permission)
           // 登录成功后,跳转到后台首页
-          this.$router.push({path: '/index', query: {month: params.username}})
+          this.$router.push({path: '/index', query: {username: params.username}})
         }, this)
       }
     }
