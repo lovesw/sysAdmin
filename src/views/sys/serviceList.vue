@@ -19,6 +19,7 @@
           {title: '编号', key: 'id', align: 'center'},
           {title: '名称', key: 'name', align: 'center'},
           {title: '路由', key: 'url', align: 'center'},
+          {title: '地址', key: 'ip', align: 'center'},
           {title: '说明', key: 'content', align: 'center'},
           {title: '时间', key: 'date', align: 'center'},
           {
@@ -83,6 +84,7 @@
           name: '',
           url: '',
           content: '',
+          ip:''
         },
         isData: '',
       }
@@ -109,6 +111,7 @@
         this.changeService.name = row.name
         this.changeService.url = row.url
         this.changeService.content = row.content
+        this.changeService.ip = row.ip
         this.$Modal.confirm({
           title: '修改服务信息',
           render: (h) => {
@@ -138,6 +141,19 @@
                 on: {
                   input: (val) => {
                     this.changeService.url = val
+                  }
+                }
+              }),h('Input', {
+                props: {
+                  value: this.changeService.ip,
+                  placeholder: '修改服务地址'
+                },
+                style: {
+                  marginTop: '20px'
+                },
+                on: {
+                  input: (val) => {
+                    this.changeService.ip = val
                   }
                 }
               }),
