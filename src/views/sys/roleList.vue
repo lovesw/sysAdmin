@@ -125,7 +125,9 @@
         this.roleId = row.id;
         // 获取角色权限信息并遍历树状图中
         this.$kit.ajax('get', this.$res.rolePermission, {id: row.id}, (res => {
-          vm.data3 = vm.$kit.rolePermissionTree(vm.data2, res.data.data);
+          // 将遍历好的树结构数组转为json字符串在转为数组，避免影响原始数组中的树结构，因为是引用类型。修改赋值后的变量会修改原始数组
+          let data=JSON.parse(JSON.stringify(vm.data2));
+          vm.data3 = vm.$kit.rolePermissionTree(data, res.data.data);
           // 显示弹框
           vm.modal1 = true;
         }), this)
