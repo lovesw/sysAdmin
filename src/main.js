@@ -5,6 +5,7 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css'
 import * as kit from './common/commonKit.js'
 import * as permission from './common/permission.js'
+import echarts from 'echarts'
 
 Vue.config.productionTip = false
 Vue.use(iView)
@@ -12,6 +13,8 @@ Vue.use(iView)
 Vue.prototype.$kit = kit
 // 权限定义
 Vue.prototype.$res = permission.permission
+// echarts 使用
+Vue.prototype.$echarts=echarts
 
 // 自定义的权限指令
 Vue.directive('has', {

@@ -6,13 +6,13 @@
                 <Form :model="formInline" :rules="ruleInline" inline ref="formInline">
                     <FormItem prop="username">
                         <Input class="ipt" placeholder="Username" type="text" v-model="formInline.username">
-                            <Icon slot="prepend" type="ios-person-outline"></Icon>
+                            <Icon type="md-person" slot="prepend"/>
                         </Input>
                     </FormItem>
-                    <br><br>
+                    <br>
                     <FormItem prop="password">
                         <Input class="ipt" placeholder="Password" type="password" v-model="formInline.password">
-                            <Icon type="md-person" slot="prepend"/>
+                            <Icon type="md-key" slot="prepend"/>
                         </Input>
                     </FormItem>
                     <br>
