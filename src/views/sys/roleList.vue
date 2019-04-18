@@ -8,7 +8,7 @@
             </router-link>
         </div>
         <Modal @on-ok="ok" v-model="modal1">
-            <Tree :data="rolePermission" multiple ref="tree" show-checkbox></Tree>
+            <Tree :data="data3" multiple ref="tree" show-checkbox></Tree>
         </Modal>
     </div>
 </template>
@@ -154,11 +154,6 @@
         }), this)
       },
     },
-      computed:{
-        rolePermission:function () {
-            return this.data3
-        }
-      }
   }
 </script>
 
