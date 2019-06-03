@@ -13,7 +13,7 @@
             }
         },
         mounted: function () {
-            jdkInfo();
+            this.jdkInfo();
         },
         methods: {
             jdkInfo: function () {
@@ -60,7 +60,7 @@
                 myChart.setOption(option);
             }
         },
-        computed: function () {
+        computed: {
 
         }
     }

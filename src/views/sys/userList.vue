@@ -157,7 +157,8 @@
         let vm = this;
         // 角色集合大于0
         if (role.length > 0) {
-          this.$kit.ajax('post', this.$res.userAddRole, {userId: this.userId, roleId: role}, (res) => {
+            // 角色ID数组使用链接分开
+          this.$kit.ajax('post', this.$res.userAddRole, {userId: this.userId, roleId: role.join(",")}, (res) => {
             this.$Message.success(res.data.msg)
             // 重新加载数据
             vm.getData()
