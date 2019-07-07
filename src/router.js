@@ -78,6 +78,15 @@ let permission = [
         path: 'userList',
         name: '用户管理',
         component: (resolve) => require(['./views/sys/userList'], resolve)
+      },
+      {
+        path: 'cornList',
+        name: '任务管理',
+        component: (resolve) => require(['./views/sys/cornList'], resolve)
+      },{
+        path: 'addCron',
+        name: '添加任务',
+        component: (resolve) => require(['./views/sys/addCron'], resolve)
       }
     ]
   }
